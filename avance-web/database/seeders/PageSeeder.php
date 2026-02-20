@@ -83,6 +83,200 @@ class PageSeeder extends Seeder
             ]
         );
 
+
+        $queEsAvance = Page::updateOrCreate(
+            ['slug' => 'que-es-avance'],
+            [
+                'title' => '¿Qué es AVANCE?',
+                'excerpt' => 'Conoce la identidad y el proceso que guía nuestro ministerio.',
+                'body' => 'AVANCE es un proceso integral de formación y discipulado con enfoque bíblico, comunitario y misional.',
+                'status' => 'published',
+                'published_at' => now(),
+                'order' => 7,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-acrostico-a1'],
+            [
+                'title' => 'A - Adoración',
+                'body' => 'Vivimos para exaltar a Dios en toda área de la vida.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 1,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-acrostico-v'],
+            [
+                'title' => 'V - Vida',
+                'body' => 'Promovemos una vida transformada por el evangelio.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 2,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-acrostico-a2'],
+            [
+                'title' => 'A - Acompañamiento',
+                'body' => 'Caminamos juntos en discipulado y cuidado pastoral.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 3,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-acrostico-n'],
+            [
+                'title' => 'N - Nutrición',
+                'body' => 'Fortalecemos la fe con enseñanza bíblica y práctica.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 4,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-acrostico-c'],
+            [
+                'title' => 'C - Comunidad',
+                'body' => 'Servimos en unidad y desarrollamos relaciones saludables.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 5,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-acrostico-e'],
+            [
+                'title' => 'E - Envío',
+                'body' => 'Formamos discípulos que impactan su entorno con misión.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 6,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-mision-vision'],
+            [
+                'title' => 'Visión',
+                'body' => 'Ver una generación de discípulos maduros que reflejen a Cristo en su familia, iglesia y sociedad.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 7,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-mision-mision'],
+            [
+                'title' => 'Misión',
+                'body' => 'Guiar personas en un proceso de crecimiento espiritual intencional: preparar, sembrar, cuidar y cosechar.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 8,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-objetivo-1'],
+            [
+                'title' => 'Objetivo 1',
+                'body' => 'Consolidar fundamentos bíblicos en cada participante.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 9,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-objetivo-2'],
+            [
+                'title' => 'Objetivo 2',
+                'body' => 'Desarrollar hábitos espirituales y compromiso comunitario.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 10,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-objetivo-3'],
+            [
+                'title' => 'Objetivo 3',
+                'body' => 'Multiplicar líderes con enfoque de servicio y misión.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 11,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-diagrama-preparar'],
+            [
+                'title' => 'Preparar',
+                'body' => 'Acondicionamos el corazón y la mente para recibir la Palabra.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 12,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-diagrama-sembrar'],
+            [
+                'title' => 'Sembrar',
+                'body' => 'Compartimos verdad bíblica mediante enseñanza y ejemplo.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 13,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-diagrama-cuidar'],
+            [
+                'title' => 'Cuidar',
+                'body' => 'Acompañamos procesos personales con seguimiento y oración.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 14,
+            ]
+        );
+
+        Page::updateOrCreate(
+            ['slug' => 'que-es-avance-diagrama-cosechar'],
+            [
+                'title' => 'Cosechar',
+                'body' => 'Celebramos frutos de transformación y enviamos a servir.',
+                'status' => 'published',
+                'published_at' => now(),
+                'parent_id' => $queEsAvance->id,
+                'order' => 15,
+            ]
+        );
+
+
         Page::updateOrCreate(
             ['slug' => 'inicio-versiculo-destacado'],
             [
