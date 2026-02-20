@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             CategorySeeder::class,
             MediaSeeder::class,
+            PrincipleStageSeeder::class,
         ]);
     }
 }
