@@ -12,6 +12,11 @@ use Illuminate\View\View;
 
 class PageController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Page::class, 'page');
+    }
+
     public function index(): View
     {
         $pages = Page::with('parent')->orderBy('parent_id')->orderBy('order')->paginate(15);
