@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PrincipleController as AdminPrincipleController;
 use App\Http\Controllers\Admin\PrincipleLessonController;
 use App\Http\Controllers\Admin\PrincipleStageController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\EventCalendarExportController;
 use App\Http\Controllers\MaterialsController;
 use App\Http\Controllers\PageController;
@@ -47,6 +48,14 @@ Route::get('/materiales/{material}/archivo', [MaterialsController::class, 'downl
 
 Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar.index');
 Route::get('/calendario/{event}/ics', EventCalendarExportController::class)->name('calendar.export.ics');
+
+Route::get('/inscripciones', [EnrollmentController::class, 'index'])->name('enrollments.index');
+Route::post('/inscripciones/estudiante', [EnrollmentController::class, 'storeStudent'])
+    ->middleware('throttle:5,1')
+    ->name('enrollments.student.store');
+Route::post('/inscripciones/lider', [EnrollmentController::class, 'storeLeader'])
+    ->middleware('throttle:5,1')
+    ->name('enrollments.leader.store');
 
 Route::get('/{slug}', [PageController::class, 'show'])->name('pages.show');
 Route::get('/', [PageController::class, 'show'])->defaults('slug', 'inicio')->name('home');
