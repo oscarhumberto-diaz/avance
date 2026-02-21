@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: avance_web_test
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_mysql
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: avance-web/package-lock.json
+
+      - name: Copy env
+        working-directory: avance-web
+        run: cp .env.example .env
+
+      - name: Composer install
+        working-directory: avance-web
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: App key
+        working-directory: avance-web
+        run: php artisan key:generate
+
+      - name: Configure database for tests
+        working-directory: avance-web
+        run: |
+          {
+            echo "DB_CONNECTION=mysql"
+            echo "DB_HOST=127.0.0.1"
+            echo "DB_PORT=3306"
+            echo "DB_DATABASE=avance_web_test"
+            echo "DB_USERNAME=root"
+            echo "DB_PASSWORD=root"
+          } >> .env
+
+      - name: Run tests
+        working-directory: avance-web
+        run: php artisan test
+
+      - name: Install npm deps
+        working-directory: avance-web
+        run: npm ci
+
+      - name: Build assets
+        working-directory: avance-web
+        run: npm run build
