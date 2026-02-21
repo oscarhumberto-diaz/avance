@@ -1,35 +1,30 @@
-<article class="testimonies-page">
+<x-layouts.public title="Testimonios">
+<article class="mx-auto w-full max-w-4xl px-4 py-14 lg:px-6">
     <header>
-        <h1>Testimonios</h1>
-        <p>Historias reales de crecimiento y transformación.</p>
+        <h1 class="text-3xl font-bold">Testimonios</h1>
+        <p class="mt-2 text-slate-600">Historias reales de crecimiento y transformación.</p>
     </header>
 
     @forelse($testimonies as $testimony)
-        <section class="testimony-card">
-            <h2>{{ $testimony->author_name }}@if($testimony->age), {{ $testimony->age }} años @endif</h2>
+        <section class="mt-5 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-xl font-semibold">{{ $testimony->author_name }}@if($testimony->age), {{ $testimony->age }} años @endif</h2>
             @if($testimony->stage_principle)
-                <p class="meta">Etapa/Principio: {{ $testimony->stage_principle }}</p>
+                <p class="text-sm text-slate-500">Etapa/Principio: {{ $testimony->stage_principle }}</p>
             @endif
-            <blockquote>“{{ $testimony->quote }}”</blockquote>
+            <blockquote class="mt-3 border-l-2 border-blue-500 pl-3 italic">“{{ $testimony->quote }}”</blockquote>
 
             @if($testimony->type === 'video' && $testimony->video_url)
-                <p><a href="{{ $testimony->video_url }}" target="_blank" rel="noopener">Ver testimonio en video</a></p>
+                <p class="mt-2"><a class="text-blue-700" href="{{ $testimony->video_url }}" target="_blank" rel="noopener">Ver testimonio en video</a></p>
             @endif
 
             @if($testimony->body)
-                <p>{!! nl2br(e($testimony->body)) !!}</p>
+                <p class="mt-2">{!! nl2br(e($testimony->body)) !!}</p>
             @endif
         </section>
     @empty
-        <p>No hay testimonios publicados por ahora.</p>
+        <p class="mt-5">No hay testimonios publicados por ahora.</p>
     @endforelse
 
-    {{ $testimonies->links() }}
+    <div class="mt-6">{{ $testimonies->links() }}</div>
 </article>
-
-<style>
-    .testimonies-page { max-width: 900px; margin: 0 auto; padding: 1rem; }
-    .testimony-card { border: 1px solid #e5e7eb; border-radius: .75rem; padding: 1rem; margin-bottom: 1rem; background: #fff; }
-    .meta { color: #4b5563; font-size: .95rem; }
-    blockquote { margin: .75rem 0; font-size: 1.1rem; font-style: italic; }
-</style>
+</x-layouts.public>
