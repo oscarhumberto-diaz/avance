@@ -79,6 +79,15 @@ jobs:
       - name: Run migrations
         run: php artisan migrate --force
 
+      - name: Debug test folders
+        working-directory: avance-web
+        run: |
+          pwd
+          ls -la
+          ls -la tests || true
+          ls -la tests/Unit || true
+          ls -la tests/Feature || true
+
       - name: Run tests
         run: php artisan test
 
