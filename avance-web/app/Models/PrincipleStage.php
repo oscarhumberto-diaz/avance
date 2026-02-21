@@ -22,6 +22,12 @@ class PrincipleStage extends Model
         return $this->hasMany(Principle::class)->orderBy('order');
     }
 
+
+    public function materials(): HasMany
+    {
+        return $this->hasMany(Material::class, 'principle_stage_id')->latest();
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';

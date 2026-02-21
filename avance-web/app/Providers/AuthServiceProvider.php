@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Material;
 use App\Models\Page;
 use App\Policies\MaterialPolicy;
 use App\Policies\PagePolicy;
@@ -13,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     protected $policies = [
         Page::class => PagePolicy::class,
+        Material::class => MaterialPolicy::class,
     ];
 
     public function boot(): void
@@ -22,7 +24,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-reports', fn ($user) => in_array($user->role, ['admin', 'leader'], true));
         Gate::define('manage-exclusive-resources', fn ($user) => in_array($user->role, ['admin', 'leader'], true));
 
-        Gate::policy('App\Models\Post', PostPolicy::class);
-        Gate::policy('App\Models\Material', MaterialPolicy::class);
+        Gate::policy('App\\Models\\Post', PostPolicy::class);
     }
 }

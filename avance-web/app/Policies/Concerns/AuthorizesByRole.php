@@ -25,4 +25,9 @@ trait AuthorizesByRole
     {
         return $this->hasRole($user, ['admin', 'leader']);
     }
+
+    private function isAdminLeaderOrEditor(User $user): bool
+    {
+        return $this->hasRole($user, ['admin', 'leader', 'editor']);
+    }
 }
