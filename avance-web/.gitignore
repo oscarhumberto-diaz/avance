@@ -16,5 +16,6 @@
 npm-debug.log
 yarn-error.log
 /.cache
-composer.lock
+# lockfiles sí deben ir versionados
+!composer.lock
 !package-lock.json
