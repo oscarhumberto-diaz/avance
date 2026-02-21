@@ -17,4 +17,4 @@ npm-debug.log
 yarn-error.log
 /.cache
 composer.lock
-package-lock.json
+!package-lock.json
