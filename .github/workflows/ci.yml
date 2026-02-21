@@ -21,7 +21,11 @@ jobs:
           --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
+
+    defaults:
+      run:
+        working-directory: avance-web
 
     steps:
       - name: Checkout
@@ -30,30 +34,25 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: "8.4"
           extensions: mbstring, pdo, pdo_mysql
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
           cache: npm
           cache-dependency-path: avance-web/package-lock.json
 
+      - name: Ensure writable dirs
+        run: |
+          mkdir -p bootstrap/cache storage/framework/{cache,sessions,testing,views} storage/logs
+          chmod -R u+rwX,g+rwX storage bootstrap/cache
+
       - name: Copy env
-        working-directory: avance-web
         run: cp .env.example .env
 
-      - name: Composer install
-        working-directory: avance-web
-        run: composer install --no-interaction --prefer-dist --no-progress
-
-      - name: App key
-        working-directory: avance-web
-        run: php artisan key:generate
-
       - name: Configure database for tests
-        working-directory: avance-web
         run: |
           {
             echo "DB_CONNECTION=mysql"
@@ -64,14 +63,36 @@ jobs:
             echo "DB_PASSWORD=root"
           } >> .env
 
-      - name: Run tests
+      - name: Composer install
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: App key
+        run: php artisan key:generate
+
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            mysqladmin ping -h 127.0.0.1 -proot && break
+            sleep 2
+          done
+
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Debug test folders
         working-directory: avance-web
+        run: |
+          pwd
+          ls -la
+          ls -la tests || true
+          ls -la tests/Unit || true
+          ls -la tests/Feature || true
+
+      - name: Run tests
         run: php artisan test
 
       - name: Install npm deps
-        working-directory: avance-web
         run: npm ci
 
       - name: Build assets
-        working-directory: avance-web
         run: npm run build
