@@ -1,3 +1,4 @@
+<x-layouts.public title="Inscripciones">
 <article class="enrollments-page">
     <header>
         <h1>Inscripciones</h1>
@@ -136,3 +137,5 @@
     .honeypot { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
     @media (max-width: 900px) { .forms-grid { grid-template-columns: 1fr; } }
 </style>
+
+</x-layouts.public>

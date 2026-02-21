@@ -1,25 +1,9 @@
-@php
-    $metaTitle = $post->meta_title ?: $post->title;
-    $metaDescription = $post->meta_description ?: ($post->excerpt ?: str(strip_tags($post->content))->limit(155));
-    $ogTitle = $post->og_title ?: $metaTitle;
-    $ogDescription = $post->og_description ?: $metaDescription;
-@endphp
-
-<meta name="title" content="{{ $metaTitle }}">
-<meta name="description" content="{{ $metaDescription }}">
-<meta property="og:title" content="{{ $ogTitle }}">
-<meta property="og:description" content="{{ $ogDescription }}">
-<meta property="og:type" content="article">
-<meta property="og:url" content="{{ route('blog.show', $post->slug) }}">
-
-<article>
-    <p><a href="{{ route('blog.index') }}">← Volver al blog</a></p>
-    <h1>{{ $post->title }}</h1>
-    <p><strong>{{ $post->categoryLabel() }}</strong> · {{ optional($post->published_at)->format('d/m/Y H:i') ?: 'Sin fecha' }}</p>
-
-    @if($post->excerpt)
-        <p><em>{{ $post->excerpt }}</em></p>
-    @endif
-
-    <div>{!! str($post->content)->markdown() !!}</div>
-</article>
+<x-layouts.public :title="$post->title">
+    <article class="mx-auto w-full max-w-4xl px-4 py-14 lg:px-6">
+        <p><a class="text-blue-700 hover:underline" href="{{ route('blog.index') }}">← Volver al blog</a></p>
+        <h1 class="mt-3 text-3xl font-bold">{{ $post->title }}</h1>
+        <p class="mt-2 text-sm text-slate-600"><strong>{{ $post->categoryLabel() }}</strong> · {{ optional($post->published_at)->format('d/m/Y H:i') ?: 'Sin fecha' }}</p>
+        @if($post->excerpt)<p class="mt-3 italic">{{ $post->excerpt }}</p>@endif
+        <div class="prose mt-6 max-w-none">{!! str($post->content)->markdown() !!}</div>
+    </article>
+</x-layouts.public>

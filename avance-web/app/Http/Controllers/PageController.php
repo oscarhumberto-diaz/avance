@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Page;
+use App\Models\Testimony;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
@@ -22,8 +24,22 @@ class PageController extends Controller
 
             $featuredVersePage = $page->children->firstWhere('slug', 'inicio-versiculo-destacado');
             $finalBannerPage = $page->children->firstWhere('slug', 'inicio-banner-final');
+            $upcomingEvents = Event::query()
+                ->visibleToPublic()
+                ->where('starts_at', '>=', now())
+                ->orderBy('starts_at')
+                ->limit(3)
+                ->get();
+            $latestTestimonies = Testimony::query()
+                ->published()
+                ->latest()
+                ->limit(3)
+                ->get();
 
-            return view('pages.home', compact('page', 'buttonPages', 'featuredVersePage', 'finalBannerPage'));
+            return view(
+                'pages.home',
+                compact('page', 'buttonPages', 'featuredVersePage', 'finalBannerPage', 'upcomingEvents', 'latestTestimonies')
+            );
         }
 
         if ($page->slug === 'que-es-avance') {
