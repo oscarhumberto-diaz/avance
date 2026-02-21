@@ -1,73 +1,64 @@
-# avance-web (Laravel 12 + Livewire)
+# avance-web
 
-Este repositorio no pudo descargar dependencias desde Packagist en este entorno CI (proxy con `403`), por lo que se incluye un bootstrap reproducible para generarlo localmente con Internet.
+Aplicación Laravel 12 para AVANCE, con rutas públicas, panel administrativo y pruebas de humo.
 
-## Requisitos
+## Requisitos locales
 
-- PHP 8.4
-- Composer 2.8+
+- PHP 8.2+
+- Composer 2+
 - Node.js 20+
-- MySQL 5.7+
+- MySQL 8+ (recomendado) con `utf8mb4`
 
-## Crear el proyecto
+## Levantar el proyecto en local
 
-Desde la raíz del repo:
-
-```bash
-bash avance-web/scripts/bootstrap.sh
-```
-
-Este script:
-
-- crea `avance-web/` con Laravel 12,
-- instala Livewire,
-- instala el starter kit oficial de auth (`laravel/breeze`) con stack Livewire,
-- compila assets con Tailwind,
-- ajusta locale/timezone a español y `America/El_Salvador`,
-- define variables MySQL y charset `utf8mb4`.
-
-## Configuración local (manual)
-
-1. Entrar al proyecto:
+1. Instalar dependencias PHP:
 
    ```bash
    cd avance-web
+   composer install
    ```
 
-2. Copiar entorno:
+2. Configurar entorno:
 
    ```bash
    cp .env.example .env
+   php artisan key:generate
    ```
 
-3. Ajustar credenciales MySQL en `.env`.
+3. Configurar base de datos MySQL en `.env` usando `utf8mb4`.
 
-4. Crear la base de datos con UTF-8 completo:
-
-   ```sql
-   CREATE DATABASE avance_web CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-
-5. Migrar:
+4. Ejecutar migraciones y seeders:
 
    ```bash
-   php artisan migrate
+   php artisan migrate --seed
    ```
 
-6. Levantar app:
+5. Instalar dependencias frontend y compilar assets:
+
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+6. Ejecutar servidor local:
 
    ```bash
    php artisan serve
    ```
 
-## Verificaciones esperadas
+## Ejecutar pruebas
 
-- `php artisan migrate` ejecuta correctamente en MySQL 5.7+.
-- Login/logout disponibles por Breeze + Livewire.
-- `/` muestra `AVANCE` (asegurar encoding UTF-8 en editor/terminal/browser).
+```bash
+php artisan test
+```
 
-## Notas de encoding
+## CI (GitHub Actions)
 
-- En MySQL usar siempre `utf8mb4` y `utf8mb4_unicode_ci`.
-- En Laravel, mantener `DB_CHARSET=utf8mb4` y `DB_COLLATION=utf8mb4_unicode_ci`.
-- Guardar archivos Blade/PHP en UTF-8 sin BOM.
+El workflow `/.github/workflows/ci.yml` ejecuta, en este orden:
+
+1. `composer install`
+2. `php artisan test`
+3. `npm ci`
+4. `npm run build`
+
+Para pruebas, CI levanta un servicio MySQL (`mysql:8.0`) y configura la app para usar esa base de datos durante la ejecución.
