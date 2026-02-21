@@ -4,9 +4,12 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\MaterialController as AdminMaterialController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\PrincipleController as AdminPrincipleController;
 use App\Http\Controllers\Admin\PrincipleLessonController;
 use App\Http\Controllers\Admin\PrincipleStageController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogRssController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\EventCalendarExportController;
@@ -26,6 +29,7 @@ Route::prefix('admin')
         Route::middleware([EnsureUserHasRole::class . ':admin,editor'])
             ->group(function () {
                 Route::resource('pages', AdminPageController::class)->except(['show']);
+                Route::resource('blog-posts', AdminPostController::class)->except(['show'])->names('posts');
                 Route::resource('principle-stages', PrincipleStageController::class)->except(['show']);
                 Route::resource('principle-stages.principles', AdminPrincipleController::class)->except(['index', 'show']);
                 Route::resource('principles.lessons', PrincipleLessonController::class)->except(['index', 'show']);
@@ -48,6 +52,10 @@ Route::prefix('admin')
                 Route::view('/', 'admin.dashboard.index')->name('index');
             });
     });
+
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/rss', BlogRssController::class)->name('blog.rss');
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/principios', [PrinciplesController::class, 'index'])->name('principles.index');
 Route::get('/principios/{stage:slug}', [PrinciplesController::class, 'show'])->name('principles.show');
