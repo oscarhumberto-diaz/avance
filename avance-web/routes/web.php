@@ -63,6 +63,8 @@ Route::get('/principios/{stage:slug}', [PrinciplesController::class, 'show'])->n
 Route::get('/materiales', [MaterialsController::class, 'index'])->name('materials.index');
 Route::get('/materiales/{material}/archivo', [MaterialsController::class, 'download'])->name('materials.download');
 
+Route::redirect('/inscripcion', '/inscripciones', 301);
+
 Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar.index');
 Route::get('/calendario/{event}/ics', EventCalendarExportController::class)->name('calendar.export.ics');
 
