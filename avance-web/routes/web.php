@@ -13,6 +13,7 @@ use App\Http\Controllers\EventCalendarExportController;
 use App\Http\Controllers\MaterialsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PrinciplesController;
+use App\Http\Controllers\TestimonyController;
 use App\Http\Middleware\EnsureUserHasRole;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,14 @@ Route::prefix('admin')
                 Route::resource('principles.lessons', PrincipleLessonController::class)->except(['index', 'show']);
                 Route::resource('materiales', AdminMaterialController::class)->except(['show'])->names('materials');
                 Route::resource('eventos', AdminEventController::class)->except(['show'])->names('events');
+                Route::resource('testimonios', \App\Http\Controllers\Admin\TestimonyController::class)
+                    ->except(['show'])
+                    ->parameters(['testimonios' => 'testimonio'])
+                    ->names('testimonies');
+                Route::patch('testimonios/{testimonio}/aprobar', [\App\Http\Controllers\Admin\TestimonyController::class, 'approve'])
+                    ->name('testimonies.approve');
+                Route::patch('testimonios/{testimonio}/publicar', [\App\Http\Controllers\Admin\TestimonyController::class, 'publish'])
+                    ->name('testimonies.publish');
             });
 
         Route::middleware([EnsureUserHasRole::class . ':admin,leader'])
@@ -56,6 +65,8 @@ Route::post('/inscripciones/estudiante', [EnrollmentController::class, 'storeStu
 Route::post('/inscripciones/lider', [EnrollmentController::class, 'storeLeader'])
     ->middleware('throttle:5,1')
     ->name('enrollments.leader.store');
+
+Route::get('/testimonios', [TestimonyController::class, 'index'])->name('testimonies.index');
 
 Route::get('/{slug}', [PageController::class, 'show'])->name('pages.show');
 Route::get('/', [PageController::class, 'show'])->defaults('slug', 'inicio')->name('home');

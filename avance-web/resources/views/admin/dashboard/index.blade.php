@@ -7,4 +7,5 @@
     <li><a href="{{ route('admin.pages.index') }}">Gestionar páginas</a></li>
     <li><a href="{{ route('admin.principle-stages.index') }}">Gestionar principios</a></li>
     <li><a href="{{ route('admin.events.index') }}">Gestionar eventos</a></li>
+    <li><a href="{{ route('admin.testimonies.index') }}">Gestionar testimonios</a></li>
 </ul>
