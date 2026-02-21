@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Material;
 use App\Models\User;
 use App\Policies\Concerns\AuthorizesByRole;
 
@@ -9,14 +10,18 @@ class MaterialPolicy
 {
     use AuthorizesByRole;
 
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user = null): bool
     {
-        return $this->isAdminOrEditor($user);
+        return true;
     }
 
-    public function view(User $user, mixed $material): bool
+    public function view(?User $user, Material $material): bool
     {
-        return $this->isAdminOrEditor($user);
+        if (!$material->leaders_only) {
+            return true;
+        }
+
+        return $user !== null && $this->isAdminLeaderOrEditor($user);
     }
 
     public function create(User $user): bool
@@ -24,12 +29,12 @@ class MaterialPolicy
         return $this->isAdminOrEditor($user);
     }
 
-    public function update(User $user, mixed $material): bool
+    public function update(User $user, Material $material): bool
     {
         return $this->isAdminOrEditor($user);
     }
 
-    public function delete(User $user, mixed $material): bool
+    public function delete(User $user, Material $material): bool
     {
         return $this->isAdminOrEditor($user);
     }

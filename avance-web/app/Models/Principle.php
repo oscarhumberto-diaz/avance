@@ -27,4 +27,9 @@ class Principle extends Model
     {
         return $this->hasMany(PrincipleLesson::class)->orderBy('order');
     }
+    public function materials(): HasMany
+    {
+        return $this->hasMany(Material::class)->latest();
+    }
+
 }
